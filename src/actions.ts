@@ -154,6 +154,24 @@ export function isActionTool(name: string): boolean {
   return ACTION_NAMES.has(name)
 }
 
+/**
+ * Which actions each role may be offered (owner, 2026-11-15: CSRs log calls
+ * and set next steps; won/lost, owner changes and call lists stay with the
+ * owners). Anyone signed in may get a draft, because a draft does nothing
+ * until they send it from their own phone. The platform's endpoints enforce
+ * the same split; this only stops Frosty offering a card that would fail.
+ */
+export const ACTIONS_BY_ROLE: Readonly<Record<string, readonly string[]>> = {
+  owner: ['log_touch', 'set_next_action', 'record_outcome', 'set_owner', 'make_call_list', 'draft_message'],
+  admin: ['log_touch', 'set_next_action', 'record_outcome', 'set_owner', 'make_call_list', 'draft_message'],
+  csr: ['log_touch', 'set_next_action', 'draft_message'],
+}
+
+export function actionToolsFor(role: string): ActionTool[] {
+  const allowed = ACTIONS_BY_ROLE[role] ?? ['draft_message']
+  return ACTION_TOOLS.filter((t) => allowed.includes(t.name))
+}
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 function str(v: unknown, max = 500): string | null {

@@ -61,3 +61,10 @@ test('a message is a draft with a link for the user\'s own phone — never a sen
   assert.ok(!('error' in mail) && mail.kind === 'draft')
   assert.equal(draftLink(mail.draft), 'mailto:b%40x.com?subject=Hi&body=Yo')
 })
+
+test('a CSR is offered calls, next steps and drafts only', async () => {
+  const { actionToolsFor } = await import('../src/actions.ts')
+  assert.deepEqual(actionToolsFor('csr').map((t) => t.name).sort(), ['draft_message', 'log_touch', 'set_next_action'])
+  assert.equal(actionToolsFor('owner').length, 6)
+  assert.deepEqual(actionToolsFor('tech').map((t) => t.name), ['draft_message'])
+})
