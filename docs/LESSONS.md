@@ -20,3 +20,12 @@ Every mistake, what it cost, and the rule that prevents it.
 - **What happened:** "Can you take action?" — "No, I'm read-only."
 - **Rule:** actions as confirm-first cards on the existing endpoints (this
   repo, v0.2).
+
+## 4. The sync script copied the wrong files (2026-11-15)
+
+**What happened:** `sync-to-platform.mjs` read `src/` relative to the folder it
+was run FROM. Run from inside frosty-saas, it copied the platform's own
+`src/middleware.ts` into `src/lib/ask-frosty/`. Caught before commit.
+**Cost:** none, it was seen in the output.
+**Rule:** the script resolves this repo from its own location, never from the
+current directory.
