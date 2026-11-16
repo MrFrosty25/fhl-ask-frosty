@@ -1,0 +1,10 @@
+{
+  "name": "fhl-ask-frosty",
+  "private": true,
+  "type": "module",
+  "description": "Ask Frosty — FHL's in-app assistant: look-ups and tap-to-confirm actions.",
+  "scripts": {
+    "test": "node --test tests/*.test.ts",
+    "sync": "node scripts/sync-to-platform.mjs"
+  }
+}
